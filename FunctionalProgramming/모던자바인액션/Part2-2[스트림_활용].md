@@ -1,4 +1,4 @@
-# Part2-2 스트림 활용 ~180p(작성 중)
+# Part2-2 스트림 활용
 
 앞 장에서 스트림의 구조와 성격을 알아보았다면 이번 장에서는 스트림의 활용에 관해 알아본다.  
 스트림 API는 내부적으로 다양한 최적화를 지원한다.  
@@ -221,9 +221,9 @@ public class Practice {
 
 		// 1. 2011년에 일어난 모든 트랜잭션을 찾아 값을 오름차순으로 정리하시오.
 		List<Transaction> inEleven = transaction.stream()
-									.filter(eleven -> transaction.getYear() == 2011)
-									.sorted(Transaction::getValue)
-									.collect(Collectors.toList());
+					.filter(eleven -> transaction.getYear() == 2011)
+					.sorted(Transaction::getValue)
+					.collect(Collectors.toList());
 		System.out.println(inEleven);
 
 		//제네릭으로 트랜잭션 타입이 선언되어 있으므로 컨텍스트에 eleven을 넣고 2011과 연도가 일치하는 대상을
@@ -232,105 +232,105 @@ public class Practice {
 		//재선언될 수 없다는 에러가 떠서 eleven으로 바꿨다.
 		//정답
 		List<Transaction> tr2011 = transaction.stream()
-									.filter(eleven -> transaction.getYear() == 2011)
-									.sorted(comapring(Transaction::getValue))
-									.collect(toList());
+					.filter(eleven -> transaction.getYear() == 2011)
+					.sorted(comapring(Transaction::getValue))
+					.collect(toList());
 		System.out.println("정답 -> " + tr0211);
 
 
 		// 2. 거래자가 근무하는 모든 도시를 중복 없이 나열하시오.
 		List<String> cities = transaction.stream()
-							.map(city -> transaction.getTrader().getCity())
-							.distinct()
-							.collect(Collectors.toList());
+					.map(city -> transaction.getTrader().getCity())
+					.distinct()
+					.collect(Collectors.toList());
 		System.out.println(cities);
 
 		//거래자의 도시를 요소로 뽑아 distinct()로 중복을 제거한 뒤 최종 연산인 collect로 마무리했다.
 		//정답
 		List<String> citiesRight = transaction.stream()
-									.map(rightCity -> transaction.getTrader().getCity())
-									.distinct()
-									.collect(toList());
+					.map(rightCity -> transaction.getTrader().getCity())
+					.distinct()
+					.collect(toList());
 
 		System.out.println("정답 -> " + citiesRight);
 		// 3. 케임브리지에서 근무하는 모든 거래자를 찾아서 이름순으로 정렬하시오.
 		List<String> names = transaction.stream()
-							.filter(peopleInCambridge -> transaction.getTrader().getCity() == "Cambridge")
-							.map(trader -> transaction.getTrader().getName())
-							.sorted(Transaction::getName)
-							.collect(Collectors.toList());
+					.filter(peopleInCambridge -> transaction.getTrader().getCity() == "Cambridge")
+					.map(trader -> transaction.getTrader().getName())
+					.sorted(Transaction::getName)
+					.collect(Collectors.toList());
 		System.out.println(names);
 
 		//sorted(comapring(Trader::getName))?
 		//equals() 메서드를 잘 활용하자.
 		//정답
 		List<Trader> nameRight = transaction.stream()
-								.map(Transaction::getTrader)
-								.filter(trader -> trader.getCity().equals("Cambridge"))
-								.distinct()
-								.sorted(comparing(Trader::getName))
-								.collect(toList());
+					.map(Transaction::getTrader)
+					.filter(trader -> trader.getCity().equals("Cambridge"))
+					.distinct()
+					.sorted(comparing(Trader::getName))
+					.collect(toList());
 
 		System.out.println("정답 -> " + nameRight);
 		// 4. 모든 거래자의 이름을 알파벳 순으로 정렬해서 반환하시오.
 		List<String> namesAlphaOrder = transaction.stream()
-										.map(nameAlpha -> transaction.getTrader().getName())
-										.sorted()
-										.collect(toList());
+					.map(nameAlpha -> transaction.getTrader().getName())
+					.sorted()
+					.collect(toList());
 		System.out.println(namesAlphaOrder);
 
 		//sorted()의 디폴트값이 알파벳 오름차순 정렬이라고 한다.
 		//정답
 		String nameAlphaRight = transaction.stream()
-								.map(alpharight -> transaction.getTrader().getName()) //모든 거래자명을 문자열로 추출
-								.distinct()
-								.sorted()
-								.reduce("", (n1, n2) -> n1 + n2); //이름을 알파벳 순으로 정렬
+					.map(alpharight -> transaction.getTrader().getName()) //모든 거래자명을 문자열로 추출
+					.distinct()
+					.sorted()
+					.reduce("", (n1, n2) -> n1 + n2); //이름을 알파벳 순으로 정렬
 
 
 		// 5. 밀라노에 거래자가 있는가?
 		Optional<String> isInMilan = transaction.stream()
-							.filter(tr -> tr.getTrader().getCity() == "Milan")
-							.findAny()
-							.ifPresent(milan -> System.out.println(milan.getTrader.getName()));
+					.filter(tr -> tr.getTrader().getCity() == "Milan")
+					.findAny()
+					.ifPresent(milan -> System.out.println(milan.getTrader.getName()));
 
 		//값이 없을 경우에 대비하려면 Optional을 쓰라고 해서 썼다.
 		//그런데 역시 불리언이 맞았다.
 		//정답
 		boolean milanBased = transaction.stream()
-							.anyMatch(milanRight -> transaction.getTrader().getCity().equals("Milan"));
+				.anyMatch(milanRight -> transaction.getTrader().getCity().equals("Milan"));
 		//anyMatch에 프레디케이트를 전달해서 밀라노에 거래자가 있는지 확인하는 코드라고 한다.
 
 		// 6. 케임브리지에 거주하는 거래자의 모든 트랜잭션값을 출력하시오
 		List<Transaction> transactionInCamb = transaction.stream()
-											.filter(cambMen -> cambMen.getTrader().getCity() == "Cambridge")
-											.collect(toList());
+					.filter(cambMen -> cambMen.getTrader().getCity() == "Cambridge")
+					.collect(toList());
 		System.out.println(transactionInCamb);
 
 		//정답
 		transaction.stream()
-					.filter( t -> "Cambridge".equals(t.getTrader().getCity()))
-					.map(Transaction::getValue)
-					.forEach(System.out::println);
+		.filter( t -> "Cambridge".equals(t.getTrader().getCity()))
+		.map(Transaction::getValue)
+		.forEach(System.out::println);
 
 
 		// 7. 전체 트랜잭션 중 최댓값은 얼마인가?
 		int max = transaction.stream()
-					.map(Transaction::getValue)
-					.filter( (a, b) -> a > b ? a : b)
-					.max();
+			.map(Transaction::getValue)
+			.filter( (a, b) -> a > b ? a : b)
+			.max();
 		System.out.println("max -> " + max);
 
 		//정답
 		Optional<Integer> highestValue = transaction.stream()
-										.map(Transaction::getValue)
-										.reduce(Integer::max);
+						.map(Transaction::getValue)
+						.reduce(Integer::max);
 
 		// 8. 전체 트랜잭션 중 최솟값은 얼마인가?
 		int min = transaction.stream()
-					.map(Transaction::getValue)
-					.filter((c, d) -> c < d ? c : d)
-					.min();
+			.map(Transaction::getValue)
+			.filter((c, d) -> c < d ? c : d)
+			.min();
 		System.out.println("min -> " + min);
 
 		//정답
@@ -344,3 +344,112 @@ public class Practice {
 같은 폴더 안에 폴더 명으로 패키지를 써주고 import 로 참조 클래스들도 넣어주는데 터미널에서 컴파일시  
 에러가 발생했다.    
 복습할 때 다시 풀어보고 컴파일까지 제대로 해보자.  
+
+## 기본형 특화 스트림
+기본형 특화 스트림은 박싱 비용을 최소화할 수 있는 스트림을 말한다. 예를 들어 reduece()를 통해  
+전체의 합을 구하는 스트림을 작성하면 해당 스트림은 Integer를 기본형으로 언박싱하게 된다.  
+이런 언박싱 비용을 없애기 위해 스트림 API는 IntStream, DoubleStream, LongStream 등 기본형에 특화된  
+스트림을 제공한다. 또한 각각의 인터페이스는 합계를 위한 sum, 최댓값을 위한 max와 같이 숫자 관련  
+리듀싱 연산 메서드를 제공한다. 또 필요할 때 다시 객체 스트림으로 복원하는 기능도 제공한다.  
+특화 스트림은 오로지 박싱 과정에서 일어나는 효율성에만 관련있으며 그 밖의 특별한 기능은 지원하지 않는다.    
+
+#### 숫자 스트림으로 매핑과 객체 스트림으로의 복원
+```java
+int calories = menu.stream() // Stream<Dish> 반환
+		.mapToInt(Dish::getCalories) // IntStream 반환
+		.sum();
+```
+  
+어떤 이유로 기본값으로 매핑한 스트림을 다시 매핑해 숫자가 아닌 다른 값을 반환하게 하고 싶으면 다음과  
+같이 할 수 있다.
+  
+```java
+IntStream intStream = menu.stream().mapToInt(Dish::getCalories);
+Stream<Integer> stream = intStream.boxed();
+```
+
+또한 Optional에도 이런 기본값 특화 스트림 조건을 달 수 있다.
+
+```java
+OptionalInt maxCalories = menu.stream()
+			.mapToInt(Dish::getCalories)
+			.max();
+
+int max = maxCalories.orElse(1);
+```
+이렇게 하면 값이 없을 때 기본 최댓값을 명시적으로 정해줄 수 있다.
+
+#### 숫자 범위
+
+for문을 통한 순회는 순회의 범위를 직접 정해줄수 있다. 스트림에도 이와 같은 기능이 있다.  
+IntStream과 LongStream은 range와 rangeClosed라는 정적 메서드를 제공한다.  
+range(a, b)는a초과 b미만, rangeClosed(a, b) 는 a 이상 b 이하이다.
+```java
+IntStream evenNumbers = IntStream.rangeClosed(1, 100) // [1, 100]
+			.filter(n -> n % 2 == 0);
+System.out.println(evenNumbers.count());
+```
+
+#### 스트림 만들기
+다양한 방식과 값으로 스트림을 만들 수 있다.
+
+*값으로 스트림 만들기*  
+```java
+Stream<String> stream = Stream.of("Modern", "Java", "In", "Action"); stream
+				.map(String::toUpperCase)
+				.forEach(System.out::println);
+
+Stream<String> stream = Stream.empty();
+```
+위 코드는 임의의 수를 인수로 받는 정적 메서드 Stream.of를 이용해 문자열 스트림을 만든다.  
+이후 empty()메서드를 통해 스트림을 비운다.  
+
+*nullable 객체로 스트림 만들기*  
+null값을 가질 수 있는 객체를 스트림으로 만들어야 할 수도 있다. 이 때는 널 체크를 해줘야 하는데  
+System.getProperty가 제공된 키에 대응하는 속성이 없으면 null을 반환하게 한다.  
+이런 메소드를 사용하려면 항상 null을 명시적으로 확인해야 한다.  
+```java
+String homeValue = System.getProperty("home");
+Stream<String> homeValueStream = homeValue == null ? Stream.empty() : Stream.of(value);
+
+Stream<String> homeValueStream = Stream.ofNullable(System.getProperty("home"));
+
+Stream<String> values = Stream.of("config", "home", "user")
+			.flatMap(key -> Stream.ofNullable(System.getProperty(key)));
+```
+
+*배열로 스트림 만들기*  
+배열을 인수로 받는 정적 메서드 Arrays.stream이 있다.
+```java
+int[] numbers = {2,3,4,5,6,7};
+int sum = Arrays.stream(numbers).sum();
+```
+sum은 27이 된다.
+
+*파일로 스트림 만들기*  
+파일에서 특정 문자열을 뽑아내거나 파일을 대상으로 액션을 취할 때 이를 활용할 수 있다.  
+파일을 스트림으로 만들어 활용할 수 있다는 정도로만 기억했다가 필요할 때 다시 보자.  
+
+*함수로 무한 스트림 만들기*    
+Stream.iterate와 Stream.generate를 이용해 무한 스트림을 만들 수 있다.  
+고정되지 않은 크기의 스트림을 만들어 요청할 때마다 무제한으로 값을 계산할 수 있다.  
+일반적으로 limit(n)을 연결해 제한을 둔다.  
+```java
+Stream.iterate(0, n -> n + 2)
+	.limit(10)
+	.forEach(System.out::println)
+```
+iterate와 limit을 이용해 0부터 10개의 짝수를 출력하는 예시이다. 
+  
+```java
+Stream.generate(Math::random)
+	.limit(5)
+	.forEach(System.out::println);
+```
+iterate와 generate의 차이는 요구한 값을 연속적으로 계산하는지 개별적으로 계산하는지의 차이다.  
+위의 코드에서 generate는 0~1 사이의 개별적인 소수를 생산한다.
+
+
+### 정리
+스트림 API에 대한 활용과 예시의 분량이 상당한 장이었다.  
+반복학습도 중요하지만 직접 사용하면서 익히자.
