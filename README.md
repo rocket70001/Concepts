@@ -11,3 +11,4 @@
 0508 - SQL 전문가 가이드 Part1(-엔터티, -ing)<br>
 0514 - SQL 전문가 가이드 Part1(데이터 모델링의 이해), Part2(-103p, -ing)<br>
 0516 - SQL 전문가 가이드 Part1\_2, Part2\_1(~145p)<br>
+0518 - 프로그래머스 SQL 문제풀이(집계함수, GROUP BY HAVING, JOIN, 서브쿼리)<br>
